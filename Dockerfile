@@ -15,8 +15,9 @@ RUN adduser -s /bin/false -h /usr/share/Jackett -G jackett -S jackett
 RUN mkdir -p /usr/share/Jackett
 RUN chown -R jackett: /usr/share/Jackett
 
-# grep Jackett
-RUN wget --no-check-certificate https://github.com/Jackett/Jackett/releases/download/v0.6.45/Jackett.Binaries.Mono.tar.gz
+# download latest Jackett release
+# http://stackoverflow.com/a/26738019
+RUN wget --no-check-certificate $(url -s https://api.github.com/repos/Jackett/Jackett/releases/latest | grep browser_download_url | grep Mono.tar.gz | head -n 1 | cut -d '"' -f 4)
 
 # unpack and change owner
 RUN tar -zxvf Jackett.Binaries.Mono.tar.gz
